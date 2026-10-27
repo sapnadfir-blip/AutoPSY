@@ -1,0 +1,112 @@
+"""
+Court-ready forensic report generator — JSON and Markdown output.
+"""
+import json
+import time
+from typing import Optional
+
+from ..protocols.forensic_container import ForensicContainer
+from ..antiforensics.detector import AntiForensicReport
+
+
+def generate_json_report(container: ForensicContainer,
+                         af_report: Optional[AntiForensicReport] = None,
+                         output_path: str = "autopsy_report.json"):
+    report = {
+        "report_type": "AutoPSY Forensic Report",
+        "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "tool_version": container.tool_version,
+        "case": {
+            "case_id": container.case_info.case_id,
+            "examiner": container.case_info.examiner,
+            "organization": container.case_info.organization,
+            "vehicle_vin": container.case_info.vehicle_vin,
+            "vehicle": f"{container.case_info.vehicle_year} {container.case_info.vehicle_make} {container.case_info.vehicle_model}",
+            "incident_date": container.case_info.incident_date,
+            "incident_description": container.case_info.incident_description,
+        },
+        "evidence_summary": container.summary(),
+        "evidence_blocks": [b.to_dict() for b in container.evidence_blocks],
+        "integrity_verification": container.verify_integrity(),
+    }
+    if af_report:
+        report["anti_forensic_analysis"] = af_report.to_dict()
+
+    with open(output_path, "w") as f:
+        json.dump(report, f, indent=2)
+    return output_path
+
+
+def generate_markdown_report(container: ForensicContainer,
+                             af_report: Optional[AntiForensicReport] = None,
+                             output_path: str = "autopsy_report.md") -> str:
+    lines = []
+    ci = container.case_info
+
+    lines.append("# AutoPSY Forensic Report")
+    lines.append(f"\n**Generated:** {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append(f"**Tool Version:** {container.tool_version}\n")
+
+    lines.append("## Case Information\n")
+    lines.append(f"| Field | Value |")
+    lines.append(f"|-------|-------|")
+    lines.append(f"| Case ID | {ci.case_id} |")
+    lines.append(f"| Examiner | {ci.examiner} |")
+    lines.append(f"| Organization | {ci.organization} |")
+    lines.append(f"| Vehicle VIN | {ci.vehicle_vin} |")
+    lines.append(f"| Vehicle | {ci.vehicle_year} {ci.vehicle_make} {ci.vehicle_model} |")
+    lines.append(f"| Incident Date | {ci.incident_date} |")
+    lines.append(f"| Description | {ci.incident_description} |")
+
+    lines.append("\n## Evidence Summary\n")
+    summary = container.summary()
+    lines.append(f"- **Evidence Blocks:** {summary['evidence_blocks']}")
+    lines.append(f"- **Total Evidence:** {summary['total_evidence_bytes']} bytes")
+    lines.append(f"- **Integrity:** {'VERIFIED' if summary['integrity'] else 'FAILED'}")
+    lines.append(f"- **Master Hash:** {summary['master_hash']}")
+
+    lines.append("\n## Evidence Blocks\n")
+    for b in container.evidence_blocks:
+        bd = b.to_dict()
+        lines.append(f"### {bd['block_id']} — {bd['block_type']}\n")
+        lines.append(f"- **Source:** {bd['source']}")
+        lines.append(f"- **Size:** {bd['data_size']} bytes")
+        lines.append(f"- **SHA-256:** `{bd['sha256'][:32]}...`")
+        if bd.get("data_hex"):
+            lines.append(f"- **Data Preview:** `{bd['data_hex'][:64]}...`")
+        if bd.get("metadata"):
+            for k, v in bd["metadata"].items():
+                if k not in ("analysis",) and not isinstance(v, (dict, list)):
+                    lines.append(f"- **{k}:** {v}")
+
+    integrity = container.verify_integrity()
+    lines.append("\n## Chain of Custody Verification\n")
+    lines.append(f"- **Overall:** {'PASS' if integrity['valid'] else 'FAIL'}")
+    lines.append(f"- **Blocks Checked:** {integrity['blocks_checked']}")
+    if integrity.get("failures"):
+        lines.append("\n**Failures:**")
+        for f in integrity["failures"]:
+            lines.append(f"- {f}")
+
+    if af_report:
+        lines.append("\n## Anti-Forensic Analysis\n")
+        lines.append(f"**Overall Risk Level:** {af_report.overall_risk.upper()}\n")
+        if af_report.indicators:
+            lines.append(f"**{len(af_report.indicators)} tamper indicators detected:**\n")
+            for i, ind in enumerate(af_report.indicators, 1):
+                d = ind.to_dict()
+                lines.append(f"### Indicator {i}: {d['type']} [{d['severity'].upper()}]\n")
+                lines.append(f"- **Confidence:** {d['confidence']}")
+                lines.append(f"- **Description:** {d['description']}")
+                lines.append(f"- **Evidence:** {d['evidence']}")
+                lines.append(f"- **Forensic Significance:** {d['forensic_significance']}")
+                lines.append("")
+        else:
+            lines.append("No tamper indicators detected.")
+
+    lines.append("\n---")
+    lines.append("*Report generated by AutoPSY v1.0.0 — Anti-Forensic Detection & Evidence Integrity Framework*")
+
+    with open(output_path, "w") as f:
+        f.write("\n".join(lines))
+    return output_path

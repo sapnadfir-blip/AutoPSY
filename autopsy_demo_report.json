@@ -1,0 +1,248 @@
+{
+  "report_type": "AutoPSY Forensic Report",
+  "generated": "2026-10-27 08:17:38",
+  "tool_version": "AutoPSY 1.0.0",
+  "case": {
+    "case_id": "DEMO-1793069238",
+    "examiner": "AutoPSY Demo",
+    "organization": "",
+    "vehicle_vin": "WBA11CF090CH77832",
+    "vehicle": "2024 BMW 3 Series",
+    "incident_date": "2026-10-27",
+    "incident_description": "AutoPSY demonstration \u2014 full vehicle forensic analysis"
+  },
+  "evidence_summary": {
+    "case_id": "DEMO-1793069238",
+    "vehicle_vin": "WBA11CF090CH77832",
+    "examiner": "AutoPSY Demo",
+    "evidence_blocks": 4,
+    "evidence_types": {
+      "can_capture": 1,
+      "ecu_data": 1,
+      "dtc_data": 1,
+      "someip_capture": 1
+    },
+    "total_evidence_bytes": 245154,
+    "master_hash": "3e27ef6859450d87...",
+    "integrity": true
+  },
+  "evidence_blocks": [
+    {
+      "block_id": "EVD-0001",
+      "block_type": "can_capture",
+      "source": "CAN:vcan0",
+      "timestamp": 1793069238.908731,
+      "data_size": 244000,
+      "data_hex": "c00000000008000000e7e3f32d3e50ff7dad36b42d04b8da41a00100000008000000050a501d2eabd7d17653b42d04b8da41d000000000080000001df659eab32fd2030a57b42d04b8da41b00100000004000000007a8d467271b42d04b8da41800200000008000000cd11352fd63dcb28f27ab42d04b8da41200300000008000000f0fb7fca3ec067069781b42d04b8da41b003000000080000009e3c7e3c1cd7a7516394b42d04b8da41200400000006000000da9f6933a7a3d2bab42d04b8da412005000000080000001e9ddfbaacf27af5ccc4b42d04b8da4120060000000800000083e2dc8c03a6e3e8c2c5b42d04b8da41c00000000008000000375a80",
+      "metadata": {
+        "interface": "vcan0",
+        "duration_seconds": 30.0,
+        "frame_count": 10000,
+        "unique_ids": 10,
+        "anomalies_detected": 0,
+        "analysis": {
+          "total_frames": 10000,
+          "unique_ids": 10,
+          "duration": 9.999,
+          "id_distribution": {
+            "0x0C0": 1000,
+            "0x0D0": 1000,
+            "0x1A0": 1000,
+            "0x1B0": 1000,
+            "0x280": 1000,
+            "0x320": 1000,
+            "0x3B0": 1000,
+            "0x420": 1000,
+            "0x520": 1000,
+            "0x620": 1000
+          },
+          "anomalies": [],
+          "diagnostic_frames": 0
+        }
+      },
+      "sha256": "f632049926956e3a1a0e098fcac73d2442bc2adbb0ef17276efb1649bd5e4ecd"
+    },
+    {
+      "block_id": "EVD-0002",
+      "block_type": "ecu_data",
+      "source": "DoIP:192.168.1.10:ECU_0x0001",
+      "timestamp": 1793069243.9103281,
+      "data_size": 564,
+      "data_hex": "7b22307846313930223a207b226465736372697074696f6e223a202256494e222c202276616c7565223a20225742413131434630393043483737383332227d2c2022307846313839223a207b226465736372697074696f6e223a20224170706c69636174696f6e2053572056657273696f6e222c202276616c7565223a20225630332e30322e3031227d2c2022307846313931223a207b226465736372697074696f6e223a20224861726477617265204e756d626572222c202276616c7565223a202248572d47572d323032342d41227d2c2022307846313843223a207b226465736372697074696f6e223a202253657269616c204e756d626572222c202276",
+      "metadata": {
+        "target_ip": "192.168.1.10",
+        "target_address": "0x0001",
+        "dids_read": 8,
+        "did_values": {
+          "0xF190": {
+            "description": "VIN",
+            "value": "WBA11CF090CH77832"
+          },
+          "0xF189": {
+            "description": "Application SW Version",
+            "value": "V03.02.01"
+          },
+          "0xF191": {
+            "description": "Hardware Number",
+            "value": "HW-GW-2024-A"
+          },
+          "0xF18C": {
+            "description": "Serial Number",
+            "value": "GW20240901001"
+          },
+          "0xF18B": {
+            "description": "Manufacturing Date",
+            "value": "2024-09-01"
+          },
+          "0xF186": {
+            "description": "Active Session",
+            "value": "01"
+          },
+          "0xF1A0": {
+            "description": "Boot SW Version",
+            "value": "BSW-1.2.0"
+          },
+          "0xF188": {
+            "description": "Application SW Fingerprint",
+            "value": "SW-GW-03.02.01"
+          }
+        }
+      },
+      "sha256": "07ae1579a0bd8d3024ac2c1b2bfd4ca8c86593b8f241661e611f5239345ed305"
+    },
+    {
+      "block_id": "EVD-0003",
+      "block_type": "dtc_data",
+      "source": "DoIP:192.168.1.10:ECU_0x0001",
+      "timestamp": 1793069248.912719,
+      "data_size": 590,
+      "data_hex": "5b7b226474635f636f6465223a20225030333030222c2022737461747573223a202230783039222c20227374617475735f666c616773223a205b22746573744661696c6564222c2022636f6e6669726d6564445443225d2c20226861735f736e617073686f74223a2066616c73652c20226861735f657874656e646564223a2066616c73652c20226167696e675f636f756e746572223a20337d2c207b226474635f636f6465223a20225530313030222c2022737461747573223a202230783043222c20227374617475735f666c616773223a205b2270656e64696e67445443222c2022636f6e6669726d6564445443225d2c20226861735f736e617073686f",
+      "metadata": {
+        "target_ip": "192.168.1.10",
+        "target_address": "0x0001",
+        "dtc_count": 4,
+        "dtc_records": [
+          {
+            "dtc_code": "P0300",
+            "status": "0x09",
+            "status_flags": [
+              "testFailed",
+              "confirmedDTC"
+            ],
+            "has_snapshot": false,
+            "has_extended": false,
+            "aging_counter": 3
+          },
+          {
+            "dtc_code": "U0100",
+            "status": "0x0C",
+            "status_flags": [
+              "pendingDTC",
+              "confirmedDTC"
+            ],
+            "has_snapshot": false,
+            "has_extended": false,
+            "aging_counter": 1
+          },
+          {
+            "dtc_code": "C0035",
+            "status": "0x08",
+            "status_flags": [
+              "confirmedDTC"
+            ],
+            "has_snapshot": false,
+            "has_extended": false,
+            "aging_counter": 7
+          },
+          {
+            "dtc_code": "B1234",
+            "status": "0x04",
+            "status_flags": [
+              "pendingDTC"
+            ],
+            "has_snapshot": false,
+            "has_extended": false,
+            "aging_counter": 0
+          }
+        ]
+      },
+      "sha256": "601ced6429c81ee33c8644865d6aa3ae0886f5ea1530bd27852dc1e17ba4aea9"
+    },
+    {
+      "block_id": "EVD-0004",
+      "block_type": "someip_capture",
+      "source": "SOME/IP:SD_Multicast",
+      "timestamp": 1793069258.925489,
+      "data_size": 0,
+      "data_hex": "",
+      "metadata": {
+        "duration_seconds": 10.0,
+        "packet_count": 0,
+        "capture_size_bytes": 0
+      },
+      "sha256": ""
+    }
+  ],
+  "integrity_verification": {
+    "valid": true,
+    "blocks_checked": 4,
+    "failures": []
+  },
+  "anti_forensic_analysis": {
+    "vehicle_vin": "WBA11CF090CH77832",
+    "analysis_time": "2026-10-27 08:17:38",
+    "overall_risk": "critical",
+    "indicator_count": 6,
+    "indicators": [
+      {
+        "type": "firmware_tamper",
+        "severity": "critical",
+        "confidence": "95%",
+        "description": "ECU 'Gateway_ECU' firmware hash changed since baseline",
+        "evidence": "Baseline: a1b2c3d4e5f6a1b2... Current: deadbeef12345678...",
+        "forensic_significance": "Firmware was reflashed after baseline was taken. This could indicate: unauthorized ECU reprogramming to hide modifications, rollback to hide a tuning/chipping operation, or OTA update that destroyed evidence state."
+      },
+      {
+        "type": "dtc_cleared",
+        "severity": "high",
+        "confidence": "90%",
+        "description": "ECU 'Engine_ECU' had 5 DTCs at baseline, now has 0",
+        "evidence": "Baseline DTCs: 5, Current: 0",
+        "forensic_significance": "All DTCs were cleared after baseline. DTC clearing is a primary anti-forensic technique \u2014 it destroys evidence of malfunctions, crashes, and unauthorized operations. Court-critical: a suspiciously clean ECU after an incident indicates deliberate evidence destruction."
+      },
+      {
+        "type": "recent_dtc_clear",
+        "severity": "medium",
+        "confidence": "80%",
+        "description": "DTC clear event recorded at 2026-10-26 14:30:00",
+        "evidence": "Last DTC clear: 2026-10-26 14:30:00",
+        "forensic_significance": "The ECU records when DTCs were last cleared. A recent clear timestamp near the incident time is strong evidence of anti-forensic activity."
+      },
+      {
+        "type": "active_diagnostic_session",
+        "severity": "critical",
+        "confidence": "95%",
+        "description": "ECU is in Programming diagnostic session (not default)",
+        "evidence": "Active session DID F186 = 02",
+        "forensic_significance": "The ECU is currently in a non-default diagnostic session. Programming session allows firmware reflashing. Extended session allows security-sensitive operations. This indicates active or recent diagnostic tool connection."
+      },
+      {
+        "type": "clock_drift",
+        "severity": "high",
+        "confidence": "75%",
+        "description": "ECU clock deviates from reference by 7200 seconds (2.0 hours)",
+        "evidence": "ECU time: 2026-10-27 06:17:38, Reference: 2026-10-27 08:17:38",
+        "forensic_significance": "Large clock deviation may indicate clock manipulation to alter the apparent time of events in ECU logs. Anti-forensic technique to create alibis or invalidate timeline analysis."
+      },
+      {
+        "type": "unknown_firmware_version",
+        "severity": "high",
+        "confidence": "80%",
+        "description": "Current firmware version 'V03.03.00' is not in known version list",
+        "evidence": "Known versions: ['V03.01.00', 'V03.02.00', 'V03.02.01'], Current: V03.03.00",
+        "forensic_significance": "Unknown firmware version may indicate: unauthorized reflashing, a custom/modified firmware, or an OTA update from an unrecognized source. OTA updates overwrite previous firmware and can destroy evidence state."
+      }
+    ],
+    "ecu_baselines_count": 2
+  }
+}
